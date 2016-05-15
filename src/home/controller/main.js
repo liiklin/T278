@@ -9,9 +9,9 @@ export default class extends Base {
 			instance = new service(),
 			status = await instance.status(); //校验是否登陆
 
-		// if (status == "offline") {
-		// 	this.redirect('/');
-		// }
+		if (status == "offline") {
+			this.redirect('/');
+		}
 	}
 
 	async indexAction() {

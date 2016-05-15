@@ -1,22 +1,21 @@
+### 开发
+下载安装nodejs开发环境后，克隆代码
+```
+git clone https://github.com/liiklin/T278.git
+```
 
-Application created by [ThinkJS](http://www.thinkjs.org)
-
-## Install dependencies
-
+运行命令
 ```
 npm install
-```
 
-## Start server
-
-```
 npm start
 ```
 
-## Deploy with pm2
+### 部署
 
-Use pm2 to deploy app on production enviroment.
+采用 docker 部署的方法
+```
+docker build -t t278_web -f docker/Dockerfile .
+```
 
-```
-pm2 startOrReload pm2.json
-```
+按 docker-compose.yml 中的配置，可访问 http://localhost:8360

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>登录成功</title>
+    <link href="./static/css/mui.min.css" rel="stylesheet" />
+    <link href="./static/css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="mui-bar mui-bar-nav">
+      <h1 class="mui-title">恭喜！登录成功</h1>
+    </header>
+    <div class="mui-content maxwid">
+      <div class="contop">
+        <div class="contop1">
+          <img class="topimg" src="./static/images/logo.png" style="margin-bottom: 14px;width: 180px;"/>
+          <span class="toptxt">登录成功</span>
+        </div>
+      </div>
+      <div class="mui-content-padded djxx">
+        <button id='logout' class="mui-btn mui-btn-block mui-btn-red">点击下线</button>
+      </div>
+      <div class="conad">
+        <img src="./static/images/ad1.png" />
+      </div>
+      </div>
+      <form id='login-form' class="mui-input-group" method="post" action="main/logout" hidden="">
+      </form>
+  </body>
+<script src="./static/js/mui.min.js"></script>
+<script src="./static/js/jquery.min.js"></script>
+<script type="text/javascript">
+  logout.addEventListener('tap', function(event) {
+    mui.confirm("是否下线?","提示","",function(event){
+      if (!event.index) {//点击确认
+        $("form").submit();
+      }
+    });
+  }, false);
+</script>
+</html>

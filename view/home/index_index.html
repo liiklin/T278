@@ -108,8 +108,10 @@
   </body>
   <script src="./static/js/mui.min.js"></script>
   <script src="./static/js/jquery.min.js"></script>
-  <script type="text/javascript">
-    login.addEventListener('tap', function(event) {
+<script src="./static/js/hammer.min.js"></script>
+<script type="text/javascript">
+  var login = new Hammer(document.getElementById("login"));
+    login.on('tap', function(event) {
       var account = $("#account").val(),
           password = $("#password").val();
 

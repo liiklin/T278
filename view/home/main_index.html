@@ -30,8 +30,10 @@
   </body>
 <script src="./static/js/mui.min.js"></script>
 <script src="./static/js/jquery.min.js"></script>
+<script src="./static/js/hammer.min.js"></script>
 <script type="text/javascript">
-  logout.addEventListener('tap', function(event) {
+  var logout = new Hammer(document.getElementById("logout"));
+  logout.on('tap', function(event) {
     mui.confirm("是否下线?","提示","",function(event){
       if (!event.index) {//点击确认
         $("form").submit();

@@ -11,9 +11,9 @@ export default class extends Base {
       instance = new service(),
       status = await instance.status(); //校验是否登陆
 
-    if (status == "online") {
-      this.redirect("/main");
-    }
+    // if (status == "online") {
+    //   this.redirect("/main");
+    // }
   }
 
   async indexAction() {
@@ -33,13 +33,13 @@ export default class extends Base {
       if (status == "success") {
         this.redirect('/main');
       } else {
-        mui.alert("账号或密码错误。请重试！");
-        this.redirect('/');
+        this.assign("loginError", "账户或密码错误");
+        this.display('index/index');
       }
     } catch (e) {
       logger.error(e);
-      mui.alert("登陆异常。请重试！");
-      this.redirect('/');
+      this.assign("loginError", e);
+      this.display('index/index');
     }
   }
 }

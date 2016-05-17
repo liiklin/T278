@@ -9,13 +9,12 @@ export default class extends Base {
 			instance = new service(),
 			status = await instance.status(); //校验是否登陆
 
-		if (status == "offline") {
-			this.redirect('/');
-		}
+		// if (status == "offline") {
+		// 	this.redirect('/');
+		// }
 	}
 
 	async indexAction() {
-		logger.info("main");
 		return this.display();
 	}
 
@@ -29,16 +28,16 @@ export default class extends Base {
 			instance = new service();
 		try {
 			let status = await instance.logout(ip);
-			if (status == "success") {
+			if (!status == "success") {
 				this.redirect('/');
 			} else {
-				mui.alert("下线不成功，请重试！");
-				this.redirect('/main');
+				this.assign("logoutError", "登出失败，请重试！");
+				this.display('main/index');
 			}
 		} catch (e) {
 			logger.error(e);
-			mui.alert("下线不成功，请重试！");
-			this.redirect('/main');
+			this.assign("logoutError", e);
+			this.display('main/index');
 		}
 	}
 }

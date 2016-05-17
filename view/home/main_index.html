@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title>登录成功</title>
-    <link href="./static/css/mui.min.css" rel="stylesheet" />
-    <link href="./static/css/style.css" rel="stylesheet" />
+    <link href="/static/css/mui.min.css" rel="stylesheet" />
+    <link href="/static/css/style.css" rel="stylesheet" />
   </head>
   <body>
     <header class="mui-bar mui-bar-nav">
@@ -14,7 +14,7 @@
     <div class="mui-content maxwid">
       <div class="contop">
         <div class="contop1">
-          <img class="topimg" src="./static/images/logo.png" style="margin-bottom: 14px;width: 180px;"/>
+          <img class="topimg" src="/static/images/logo.png" style="margin-bottom: 14px;width: 180px;"/>
           <span class="toptxt">登录成功</span>
         </div>
       </div>
@@ -22,16 +22,17 @@
         <button id='logout' class="mui-btn mui-btn-block mui-btn-red">点击下线</button>
       </div>
       <div class="conad">
-        <img src="./static/images/ad1.png" />
+        <img src="/static/images/ad1.png" />
       </div>
       </div>
       <form id='login-form' class="mui-input-group" method="post" action="main/logout" hidden="">
       </form>
   </body>
-<script src="./static/js/mui.min.js"></script>
-<script src="./static/js/jquery.min.js"></script>
-<script src="./static/js/hammer.min.js"></script>
+<script src="/static/js/mui.min.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/hammer.min.js"></script>
 <script type="text/javascript">
+$().ready(function(){
   var logout = new Hammer(document.getElementById("logout"));
   logout.on('tap', function(event) {
     mui.confirm("是否下线?","提示","",function(event){
@@ -40,5 +41,14 @@
       }
     });
   }, false);
+
+});
+
+    $().ready(function(){
+      if ("{{logoutError}}" !== "") {
+        mui.alert("{{logoutError}}");
+      }
+    });
+
 </script>
 </html>

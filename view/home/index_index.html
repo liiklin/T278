@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title>登陆</title>
-    <link href="./static/css/mui.min.css" rel="stylesheet" />
-    <link href="./static/css/style.css" rel="stylesheet" />
+    <link href="/static/css/mui.min.css" rel="stylesheet" />
+    <link href="/static/css/style.css" rel="stylesheet" />
     <style>
       .area {
         margin: 20px auto 0px auto;
@@ -82,7 +82,7 @@
       <h1 class="mui-title">登录</h1>
     </header>
     <div class="mui-content maxwid">
-      <img src="./static/images/cdlogo.png" style="display: block;margin-left: auto;margin-right: auto;margin-top: 40px;
+      <img src="/static/images/cdlogo.png" style="display: block;margin-left: auto;margin-right: auto;margin-top: 40px;
         margin-bottom: 20px;"/>
       <form id='login-form' class="mui-input-group" method="post" action="index/auth">
         <div class="mui-input-row">
@@ -106,9 +106,9 @@
       </div>
     </div>
   </body>
-  <script src="./static/js/mui.min.js"></script>
-  <script src="./static/js/jquery.min.js"></script>
-<script src="./static/js/hammer.min.js"></script>
+<script src="/static/js/mui.min.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/hammer.min.js"></script>
 <script type="text/javascript">
   var login = new Hammer(document.getElementById("login"));
     login.on('tap', function(event) {
@@ -122,8 +122,13 @@
         mui.alert("请输入账号!");
         return;
       }
-
       $("form").submit();
     }, false);
+
+    $().ready(function(){
+      if ("{{loginError}}" !== "") {
+        mui.alert("{{loginError}}");
+      }
+    });
   </script>
 </html>

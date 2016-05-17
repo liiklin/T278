@@ -7,7 +7,7 @@ export default class extends think.controller.base {
 		super.init(http);
 	}
 
-	async __before() {
-
+	__before() {
+		console.log("__before");
 	}
 }

@@ -12,7 +12,7 @@ export default class extends think.service.base {
 	}
 
 	async auth(account, password, ip) {
-		logger.info(account, password, ip);
+		// logger.info(account, password, ip);
 		let url = `${baseUrl}/${version}/auth`;
 		return new Promise((resolve, reject) => {
 			fetch(url, {
@@ -22,16 +22,20 @@ export default class extends think.service.base {
 					},
 					body: `username=${account}&password=${password}&userip=${ip}`
 				})
-				.then(function(response) {
+				.then((response) => {
 					if (response.status >= 400) {
 						throw new Error("Bad response from server");
 						return reject("Bad response from server");
 					}
 					return response.text();
 				})
-				.then(function(status) {
-					console.log(status);
+				.then((status) => {
+					logger.info(status);
 					return resolve(status);
+				})
+				.catch((e)=>{
+					logger.error(e);
+					return reject(e);
 				});
 		})
 	}
@@ -40,16 +44,20 @@ export default class extends think.service.base {
 		let url = `${baseUrl}/${version}/status`
 		return new Promise((resolve, reject) => {
 			fetch(url)
-				.then(function(response) {
+				.then((response) => {
 					if (response.status >= 400) {
 						throw new Error("Bad response from server");
 						return reject("Bad response from server");
 					}
 					return response.text();
 				})
-				.then(function(status) {
-					console.log(status);
+				.then((status) => {
+					logger.info(status);
 					return resolve(status);
+				})
+				.catch((e)=>{
+					logger.error(e);
+					return reject(e);
 				});
 		})
 	}
@@ -64,16 +72,20 @@ export default class extends think.service.base {
 					},
 					body: `userip=${userip}`
 				})
-				.then(function(response) {
+				.then((response) => {
 					if (response.status >= 400) {
 						throw new Error("Bad response from server");
 						return reject("Bad response from server");
 					}
 					return response.text();
 				})
-				.then(function(status) {
-					console.log(status);
+				.then((status) => {
+					logger.info(status);
 					return resolve(status);
+				})
+				.catch((e)=>{
+					logger.error(e);
+					return reject(e);
 				});
 		})
 	}
@@ -82,16 +94,20 @@ export default class extends think.service.base {
 		let url = `${baseUrl}/${version}/ip`;
 		return new Promise((resolve, reject) => {
 			fetch(url)
-				.then(function(response) {
+				.then((response) => {
 					if (response.status >= 400) {
 						throw new Error("Bad response from server");
 						return reject("Bad response from server");
 					}
 					return response.text();
 				})
-				.then(function(ip) {
-					console.log(ip);
+				.then((ip) => {
+					logger.info(ip);
 					return resolve(ip);
+				})
+				.catch((e)=>{
+					logger.error(e);
+					return reject(e);
 				});
 		});
 	}

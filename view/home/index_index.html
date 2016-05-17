@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title>登陆</title>
     <link href="/static/css/mui.min.css" rel="stylesheet" />
+    <link href="/static/css/lobibox.min.css" rel="stylesheet" />
     <link href="/static/css/style.css" rel="stylesheet" />
     <style>
       .area {
@@ -62,7 +63,7 @@
         background-repeat: no-repeat;
         margin: 0px 20px;
         /*-webkit-filter: grayscale(100%); */
-        
+
         border: solid 1px #ddd;
         border-radius: 25px;
       }
@@ -94,7 +95,7 @@
           <input id='password' name="password" type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
         </div>
       </form>
-      
+
       <div class="mui-content-padded">
         <button id='login' class="mui-btn mui-btn-block mui-btn-red">登录</button>
         <div class="link-area"><a id='reg'>注册账号</a> <span class="spliter">|</span> <a id='forgetPassword'>帮助</a>
@@ -108,6 +109,7 @@
   </body>
 <script src="/static/js/mui.min.js"></script>
 <script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/lobibox.min.js"></script>
 <script src="/static/js/hammer.min.js"></script>
 <script type="text/javascript">
   var login = new Hammer(document.getElementById("login"));
@@ -127,7 +129,12 @@
 
     $().ready(function(){
       if ("{{loginError}}" !== "") {
-        mui.alert("{{loginError}}");
+        Lobibox.notify('error', {
+            soundPath:"/static/sounds/",
+            size: 'mini',
+            title: '登陆错误',
+            msg: '{{loginError}}'
+        });
       }
     });
   </script>

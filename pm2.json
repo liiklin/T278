@@ -1,8 +1,8 @@
 {
   "apps": [{
-    "name": "D:codeD:codeT278",
+    "name": "T278",
     "script": "www/production.js",
-    "cwd": "D:\code\T278",
+    "cwd": "/Users/andylau/git/T278",
     "exec_mode": "cluster",
     "instances": 0,
     "max_memory_restart": "1G",
@@ -10,7 +10,7 @@
     "node_args": [],
     "args": [],
     "env": {
-      
+
     }
   }]
 }

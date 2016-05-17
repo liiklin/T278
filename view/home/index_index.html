@@ -112,22 +112,23 @@
 <script src="/static/js/lobibox.min.js"></script>
 <script src="/static/js/hammer.min.js"></script>
 <script type="text/javascript">
-  var login = new Hammer(document.getElementById("login"));
-    login.on('tap', function(event) {
-      var account = $("#account").val(),
-          password = $("#password").val();
-
-      if (!account) {
-        mui.alert("请输入账号!");
-        return;
-      }else if (!password) {
-        mui.alert("请输入账号!");
-        return;
-      }
-      $("form").submit();
-    }, false);
-
     $().ready(function(){
+      var login = new Hammer(document.getElementById("login"));
+        login.on('tap', function(event) {
+          var account = $("#account").val(),
+              password = $("#password").val();
+
+          if (!account) {
+            mui.alert("请输入账号!");
+            return;
+          }else if (!password) {
+            mui.alert("请输入账号!");
+            return;
+          }
+          $("form").submit();
+        }, false);
+
+
       if ("{{loginError}}" !== "") {
         Lobibox.notify('error', {
             soundPath:"/static/sounds/",

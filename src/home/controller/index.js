@@ -21,8 +21,9 @@ export default class extends Base {
   }
 
   async authAction(self) {
+    // console.log("authAction");
     if (this.isGet()) {
-      this.redirect("/");
+      return this.redirect("/");
     }
     let post = this.post();
     let ip = this.ip();
@@ -31,15 +32,15 @@ export default class extends Base {
     try {
       let status = await instance.auth(post.account, post.password, ip);
       if (status == "success") {
-        this.redirect('/main');
+        return this.redirect('/main');
       } else {
-        this.assign("loginError", "账户或密码错误");
-        this.display('index/index');
+        this.assign("loginError", status);
+        return this.display('index/index');
       }
     } catch (e) {
       logger.error(e);
       this.assign("loginError", e);
-      this.display('index/index');
+      return this.display('index/index');
     }
   }
 }

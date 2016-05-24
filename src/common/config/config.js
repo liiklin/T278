@@ -7,6 +7,7 @@ if (think.isFile(portFile)) {
 }
 
 export default {
+	route_on: true,
 	port: port || 8360,
 	resource_reg: /^(static\/|theme\/|[^\/]+\.(?!js|html|xml)\w+$)/
 };

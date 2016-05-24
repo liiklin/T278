@@ -31,7 +31,7 @@ export default class extends Base {
 			if (!status == "success") {
 				this.redirect('/');
 			} else {
-				this.assign("logoutError", "登出失败，请重试！");
+				this.assign("logoutError", status);
 				this.display('main/index');
 			}
 		} catch (e) {

@@ -6,41 +6,48 @@ var logger = require('tracer').colorConsole();
 
 export default class extends Base {
 
-  async __before() {
-    let service = this.service("home/auth"),
-      instance = new service(),
-      status = await instance.status(); //校验是否登陆
+    async __before() {
+        // let service = this.service("home/auth"),
+        //   instance = new service(),
+        //   status = await instance.status(); //校验是否登陆
 
-    // if (status == "online") {
-    //   this.redirect("/main");
-    // }
-  }
-
-  async indexAction() {
-    return this.display();
-  }
-
-  async authAction(self) {
-    // console.log("authAction");
-    if (this.isGet()) {
-      return this.redirect("/");
+        // if (status == "online") {
+        //   this.redirect("/main");
+        // }
     }
-    let post = this.post();
-    let ip = this.ip();
-    let service = this.service("home/auth");
-    let instance = new service();
-    try {
-      let status = await instance.auth(post.account, post.password, ip);
-      if (status == "success") {
-        return this.redirect('/main');
-      } else {
-        this.assign("loginError", status);
-        return this.display('index/index');
-      }
-    } catch (e) {
-      logger.error(e);
-      this.assign("loginError", e);
-      return this.display('index/index');
+
+    async indexAction() {
+        this.assign("title", "登录");
+        return this.display();
     }
-  }
+
+    async authAction(self) {
+        // console.log("authAction");
+        if (this.isGet()) {
+            return this.redirect("/");
+        }
+        let post = this.post();
+        let ip = this.ip();
+        let service = this.service("home/auth");
+        let instance = new service();
+        try {
+            let status = await instance.auth(post.account, post.password, ip);
+            if (status == "success") {
+                return this.redirect('/main');
+            } else {
+                this.assign({
+                    "loginError": status,
+                    "title": "登录"
+                });
+                return this.display('index/index');
+            }
+        } catch (e) {
+            logger.error(e);
+            this.assign({
+                "loginError": e,
+                "title": "登录"
+            });
+            return this.display('index/index');
+        }
+    }
 }

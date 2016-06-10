@@ -1,0 +1,250 @@
+{% extends "./base.html" %} {% block css %}
+<style type="text/css">
+.mui-input-group label {
+    width: 35%;
+    padding: 10px 5px;
+    text-align: -webkit-center;
+    text-align: center;
+}
+
+.mui-input-row label~input,
+.mui-input-row label~select,
+.mui-input-row label~textarea {
+    width: 55%;
+    float: none;
+}
+</style>
+{% endblock %} {% block content %}
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-icon mui-action-menu mui-icon-back mui-pull-left" href="/"></a>
+    <h1 class="mui-title">{{title}}</h1>
+</header>
+<div class="mui-content maxwid">
+    <img src="/static/images/cdlogo.png" style="display: block;margin-left: auto;margin-right: auto;margin-top: 40px;margin-bottom: 20px;" />
+    <form id='register-form' class="mui-input-group" method="post" action="/register/register/">
+        <div class="mui-input-row">
+            <label>一卡通账户</label>
+            <input id='account' name="account" type="text" class="mui-input-clear mui-input" placeholder="请输入一卡通账户">
+        </div>
+        <div class="mui-input-row">
+            <label>一卡通密码</label>
+            <input id='password' name="password" type="password" class="mui-input-clear mui-input" placeholder="请输入一卡通密码">
+            <div></div>
+        </div>
+        <div class="mui-input-row">
+            <label>绑定手机</label>
+            <input id='phone' name="phone" type="text" class="mui-input-clear mui-input" placeholder="请输入需要绑定手机号">
+        </div>
+        <div class="mui-input-row">
+            <label>手机验证码</label>
+            <input id='code' name="code" type="text" class="mui-input-clear mui-input" placeholder="请输入验证码" style="width:30%;float: none;">
+            <button type="button" id="sendCode" class="mui-btn mui-btn-primary" style="float: none;width: 30%;margin-top: 1px;">获取验证码</button>
+        </div>
+        <div class="mui-input-row">
+            <label>设置登录密码</label>
+            <input id='loginpwd' name="loginpwd" type="password" class="mui-input-clear mui-input" placeholder="请输入登录密码">
+        </div>
+        <div class="mui-input-row">
+            <label>再次输入密码</label>
+            <input id='comfirpwd' name="comfirpwd" type="password" class="mui-input-clear mui-input" placeholder="请输入登录密码">
+        </div>
+    </form>
+    <div class="mui-content-padded">
+        <button id='register' class="mui-btn mui-btn-block mui-btn-red">注册</button>
+        <div class="link-area">
+            <a id='unreg' href="/close/index/">注销账号</a>
+        </div>
+    </div>
+    <div class="mui-content-padded oauth-area">
+    </div>
+</div>
+{% endblock %} {% block script %}
+<script type="text/javascript">
+var isRightCard = false,
+    isRightPhone = false;
+$().ready(function() {
+    //校验一卡通是否正确
+    $("#account").on("change", function() {
+        var password = $("#password").val();
+        var account = $(this).val();
+        if (!_.isEmpty(password) && !_.isEmpty(account)) {
+            var data = {
+                account: account,
+                password: password
+            };
+            $.ajax({
+                type: 'post',
+                "url": "/register/idchecker/",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    if (data.status == 'success') {
+                        //验证成功
+                        $('<span class="mui-icon mui-icon-checkmarkempty"></span>').insertAfter("#password");
+                        isRightCard = true;
+                    } else {
+                        //验证失败
+                        isRightCard = false;
+                        $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
+                    }
+                },
+                error: function(error) {
+                    console.error(error);
+                    isRightCard = false;
+                    $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
+                    alert("异常！");
+                }
+            });
+        }
+    });
+    $("#password").on("change", function() {
+        var password = $(this).val();
+        var account = $("#account").val();
+        if (!_.isEmpty(password) && !_.isEmpty(account)) {
+            var data = {
+                account: account,
+                password: password
+            };
+            $.ajax({
+                type: 'post',
+                "url": "/register/idchecker/",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    if (data.status == 'success') {
+                        //验证成功
+                        $('<span class="mui-icon mui-icon-checkmarkempty"></span>').insertAfter("#password");
+                        isRightCard = true;
+                    } else {
+                        //验证失败
+                        isRightCard = false;
+                        $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
+                    }
+                },
+                error: function(error) {
+                    console.error(error);
+                    isRightCard = false;
+                    $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
+                    // alert("异常！");
+                    Lobibox.notify('error', {
+                        soundPath: "/static/sounds/",
+                        size: 'mini',
+                        title: '异常！',
+                        msg: error.responseText
+                    });
+                }
+            });
+        }
+    });
+    //发送验证码
+    var sendCode = new Hammer(document.getElementById("sendCode"));
+    sendCode.on('tap', function(event) {
+        var phone = $("#phone").val();
+        if (!_.isEmpty(phone)) {
+            var data = {
+                phone: phone
+            };
+            $.ajax({
+                type: 'post',
+                "url": "/register/sendverifycodeAction/",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    Lobibox.notify('succee', {
+                        soundPath: "/static/sounds/",
+                        size: 'mini',
+                        title: '发送成功',
+                        msg: '验证码发送成功！'
+                    });
+                },
+                error: function(error) {
+                    console.error(error);
+                    Lobibox.notify('error', {
+                        soundPath: "/static/sounds/",
+                        size: 'mini',
+                        title: '错误',
+                        msg: error.responseText
+                    });
+                }
+            });
+        } else {
+            Lobibox.notify('error', {
+                soundPath: "/static/sounds/",
+                size: 'mini',
+                title: '错误',
+                msg: '请输入需要绑定手机号'
+            });
+        }
+    }, false);
+    //验证验证码
+    $("#code").on("change", function() {
+        var phone = $("#phone").val();
+        var code = $(this).val();
+        if (!_.isEmpty(phone) && !_.isEmpty(code)) {
+            var data = {
+                code: code,
+                phone: phone
+            };
+            $.ajax({
+                type: 'post',
+                "url": "/register/phonechecker/",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    if (data.status == 'success') {
+                        //验证成功
+                        isRightPhone = true;
+                        $('<span class="mui-icon mui-icon-checkmarkempty"></span>').insertAfter("#password");
+                    } else {
+                        //验证失败
+                        isRightPhone = false;
+                        $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
+                    }
+                },
+                error: function(error) {
+                    console.error(error);
+                    $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
+                    isRightPhone = false;
+                    //alert("异常！");
+                    Lobibox.notify('error', {
+                        soundPath: "/static/sounds/",
+                        size: 'mini',
+                        title: '异常！',
+                        msg: error.responseText
+                    });
+                }
+            });
+        }
+    });
+
+    //注册
+    var register = new Hammer(document.getElementById("register"));
+    register.on('tap', function(event) {
+        var phone = $("#phone").val();
+        $("form").submit();
+    }, false);
+
+    //注册错误
+    if ("{{registerError}}" !== "") {
+        Lobibox.notify('error', {
+            soundPath: "/static/sounds/",
+            size: 'mini',
+            title: '注册错误',
+            msg: '{{registerError}}'
+        });
+    }
+});
+</script>
+{% endblock %}

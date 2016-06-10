@@ -1,142 +1,64 @@
-<!DOCTYPE html>
-<html class="ui-page-login">
-
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>登陆</title>
-    <link href="/static/css/mui.min.css" rel="stylesheet" />
-    <link href="/static/css/lobibox.min.css" rel="stylesheet" />
-    <link href="/static/css/style.css" rel="stylesheet" />
-    <style>
-      .area {
-        margin: 20px auto 0px auto;
-      }
-      .mui-input-group {
-        margin-top: 10px;
-      }
-      .mui-input-group:first-child {
-        margin-top: 20px;
-      }
-      .mui-input-group label {
-        width: 22%;
-      }
-      .mui-input-row label~input,
-      .mui-input-row label~select,
-      .mui-input-row label~textarea {
-        width: 78%;
-      }
-      .mui-checkbox input[type=checkbox],
-      .mui-radio input[type=radio] {
-        top: 6px;
-      }
-      .mui-content-padded {
-        margin-top: 25px;
-      }
-      .mui-btn {
-        padding: 10px;
-      }
-      .link-area {
-        display: block;
-        margin-top: 25px;
-        text-align: center;
-      }
-      .spliter {
-        color: #bbb;
-        padding: 0px 8px;
-      }
-      .oauth-area {
-        position: absolute;
-        bottom: 20px;
-        left: 0px;
-        text-align: center;
-        width: 100%;
-        padding: 0px;
-        margin: 0px;
-      }
-      .oauth-area .oauth-btn {
-        display: inline-block;
-        width: 50px;
-        height: 50px;
-        background-size: 30px 30px;
-        background-position: center center;
-        background-repeat: no-repeat;
-        margin: 0px 20px;
-        /*-webkit-filter: grayscale(100%); */
-
-        border: solid 1px #ddd;
-        border-radius: 25px;
-      }
-      .oauth-area .oauth-btn:active {
-        border: solid 1px #aaa;
-      }
-      .maxwid{
-  max-width: 380px;
-  margin:auto;
-}
-    </style>
-
-  </head>
-
-  <body>
-    <header class="mui-bar mui-bar-nav">
-      <h1 class="mui-title">登录</h1>
-    </header>
-    <div class="mui-content maxwid">
-      <img src="/static/images/cdlogo.png" style="display: block;margin-left: auto;margin-right: auto;margin-top: 40px;
-        margin-bottom: 20px;"/>
-      <form id='login-form' class="mui-input-group" method="post" action="/index/auth">
+{% extends "./base.html" %}
+{% block content %}
+<header class="mui-bar mui-bar-nav">
+    <h1 class="mui-title">{{title}}</h1>
+</header>
+<div class="mui-content maxwid">
+    <img src="/static/images/cdlogo.png" style="display: block;margin-left: auto;margin-right: auto;margin-top: 40px;
+        margin-bottom: 20px;" />
+    <form id='login-form' class="mui-input-group" method="post" action="/index/auth">
         <div class="mui-input-row">
-          <label>账号</label>
-          <input id='account' name="account" type="text" class="mui-input-clear mui-input" placeholder="请输入账号">
+            <label>账号</label>
+            <input id='account' name="account" type="text" class="mui-input-clear mui-input" placeholder="请输入账号或手机号">
         </div>
         <div class="mui-input-row">
-          <label>密码</label>
-          <input id='password' name="password" type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
+            <label>密码</label>
+            <input id='password' name="password" type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
         </div>
-      </form>
-
-      <div class="mui-content-padded">
+    </form>
+    <div class="mui-content-padded">
         <button id='login' class="mui-btn mui-btn-block mui-btn-red">登录</button>
-        <div class="link-area"><a id='reg'>注册账号</a> <span class="spliter">|</span> <a id='forgetPassword'>帮助</a>
+        <div class="link-area">
+            <a id='reg' href="/register/index/">注册账号</a>
+            <span class="spliter">|</span>
+            <a id='unreg' href="/close/index/">注销账号</a>
+            <span class="spliter">|</span>
+            <a id='forgot' href="/forgot/index/">忘记密码</a>
+            <span class="spliter">|</span>
+            <a id='forgetPassword'>帮助</a>
         </div>
-      </div>
-
-      <div class="mui-content-padded oauth-area">
-
-      </div>
     </div>
-  </body>
-<script src="/static/js/mui.min.js"></script>
-<script src="/static/js/jquery.min.js"></script>
-<script src="/static/js/lobibox.min.js"></script>
-<script src="/static/js/hammer.min.js"></script>
+    <div class="mui-content-padded oauth-area">
+    </div>
+</div>
+{% endblock %} 
+{% block script %}
 <script type="text/javascript">
-    $().ready(function(){
-      var login = new Hammer(document.getElementById("login"));
-        login.on('tap', function(event) {
-          var account = $("#account").val(),
-              password = $("#password").val();
+$().ready(function() {
+    var login = new Hammer(document.getElementById("login"));
+    login.on('tap', function(event) {
+        var account = $("#account").val(),
+            password = $("#password").val();
 
-          if (!account) {
+        if (!account) {
             mui.alert("请输入账号!");
             return;
-          }else if (!password) {
+        } else if (!password) {
             mui.alert("请输入账号!");
             return;
-          }
-          $("form").submit();
-        }, false);
+        }
+        $("form").submit();
+    }, false);
 
 
-      if ("{{loginError}}" !== "") {
+    if ("{{loginError}}" !== "") {
         Lobibox.notify('error', {
-            soundPath:"/static/sounds/",
+            soundPath: "/static/sounds/",
             size: 'mini',
             title: '登陆错误',
             msg: '{{loginError}}'
         });
-      }
-    });
-  </script>
-</html>
+    }
+}); 
+</script>
+{% endblock %}

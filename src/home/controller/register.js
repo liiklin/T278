@@ -87,10 +87,11 @@ export default class extends Base {
             return this.redirect("/");
         }
         let post = this.post();
+        logger.info(post);
         let service = this.service("home/register");
         let instance = new service();
         try {
-            let status = await instance.phonechecker(post.account, post.phone, post.loginpwd);
+            let status = await instance.register(post.account, post.phone, post.loginpwd);
             if (status == "success") {
                 return this.redirect('/main');
             } else {

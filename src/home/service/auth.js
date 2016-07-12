@@ -3,7 +3,7 @@
 import fetch from 'node-fetch';
 var logger = require('tracer').colorConsole();
 
-const baseUrl = 'http://202.115.80.69:8000',
+const baseUrl = 'http://202.115.80.150:8000',
     version = 'v1';
 
 export default class extends think.service.base {

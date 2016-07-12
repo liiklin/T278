@@ -44,7 +44,7 @@ $().ready(function(){
     });
   }, false);
 
-  if ("{{logoutError}}" == "") {
+  if ("{{logoutError}}" !== "") {
     Lobibox.notify('error', {
       soundPath:"/static/sounds/",
       size: 'mini',

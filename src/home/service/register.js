@@ -3,7 +3,7 @@
 import fetch from 'node-fetch';
 var logger = require('tracer').colorConsole();
 
-const baseUrl = 'http://202.115.80.69:8000',
+const baseUrl = 'http://202.115.80.149:8000',
     version = 'v1';
 
 export default class extends think.service.base {
@@ -68,6 +68,7 @@ export default class extends think.service.base {
 
     async phonechecker(phone, verifycode) {
         let url = `${baseUrl}/${version}/phone_checker`;
+        logger.debug(url);
         return new Promise((resolve, reject) => {
             fetch(url, {
                     method: "POST",
@@ -96,6 +97,7 @@ export default class extends think.service.base {
 
     async register(cardid, phone, password) {
         let url = `${baseUrl}/${version}/register`;
+        logger.debug(url);
         return new Promise((resolve, reject) => {
             fetch(url, {
                     method: "POST",

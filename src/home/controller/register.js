@@ -60,6 +60,7 @@ export default class extends Base {
         }
     }
 
+
     async sendverifycodeAction() {
         if (this.isGet()) {
             return this.redirect("/");
@@ -68,7 +69,7 @@ export default class extends Base {
         let service = this.service("home/register");
         let instance = new service();
         try {
-            let status = await instance.phonechecker(post.phone);
+            let status = await instance.sendverifycode(post.phone);
             if (status == "success") {
                 return this.json({
                     status: status
@@ -93,7 +94,7 @@ export default class extends Base {
         try {
             let status = await instance.register(post.account, post.phone, post.loginpwd);
             if (status == "success") {
-                return this.redirect('/main');
+                return this.redirect('/index');
             } else {
                 this.assign({
                     "registerError": status,

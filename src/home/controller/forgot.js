@@ -23,7 +23,7 @@ export default class extends Base {
         let service = this.service("home/register");
         let instance = new service();
         try {
-            let status = await instance.unregister(post.account, post.newpassword);
+            let status = await instance.modifypassword(post.account, post.newpassword);
             if (status == "success") {
                 return this.redirect('/main');
             } else {

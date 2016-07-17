@@ -63,7 +63,8 @@
     var isRightCard = false,
         isRightPhone = false,
         timeout = '',
-        count = 5; // 倒数十下
+        baseTime = 60,
+        count = baseTime; // 倒数十下
     $().ready(function() {
         //校验一卡通是否正确
         $("#account").on("change", function() {
@@ -295,7 +296,7 @@
                     type: 'post',
                     "url": "/register/register/",
                     cache: false,
-                    contentType: "application/json; charset=utf-8",
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                     data: $('form').serialize(),
                     dataType: 'json',
                     success: function(data) {
@@ -348,7 +349,7 @@
             $('#sendCode').removeAttr("disabled");
             $('#sendCode').text("重新发送");
             clearTimeout(timeout); // 可取消由 setTimeout() 方法设置的 timeout
-            count = 5;
+            count = baseTime;
         } else {
             $('#sendCode').text("(" + count.toString() + "s)后重试");
             setTimeout(BtnCount, 1000);

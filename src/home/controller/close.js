@@ -25,6 +25,7 @@ export default class extends Base {
         let instance = new service();
         try {
             let status = await instance.unregister(post.account);
+            logger.info(status.info);
             if (status.result == "success") {
                 return this.json({
                     status: status.result,

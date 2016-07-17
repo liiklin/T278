@@ -33,7 +33,7 @@
         </div>
     </form>
     <div class="mui-content-padded">
-        <button id='unreg' class="mui-btn mui-btn-block mui-btn-red">注销该卡</button>
+        <button id='unreg' class="mui-btn mui-btn-block mui-btn-red" disabled="disabled">注销该卡</button>
         <div class="link-area">
             <a id='reg' href="/register/index/">注册账号</a>
         </div>
@@ -65,19 +65,26 @@
                         console.log(data);
                         if (data.status == 'success') {
                             //验证成功
-                            $('<span class="mui-icon mui-icon-checkmarkempty"></span>').insertAfter("#password");
                             isRightCard = true;
+                            $('#unreg').removeAttr("disabled");
+                            $('<span class="mui-icon mui-icon-checkmarkempty"></span>').insertAfter("#password");
                         } else {
                             //验证失败
                             isRightCard = false;
+                            $('#unreg').attr("disabled", "true");
                             $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
                         }
                     },
                     error: function(error) {
                         console.error(error);
                         isRightCard = false;
-                        // $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
-                        alert("异常！");
+                        $('#unreg').attr("disabled", "true");
+                        Lobibox.notify('error', {
+                            soundPath: "/static/sounds/",
+                            size: 'mini',
+                            title: '异常！',
+                            msg: error.responseText
+                        });
                     }
                 });
             }
@@ -103,17 +110,18 @@
                             //验证成功
                             $('<span class="mui-icon mui-icon-checkmarkempty"></span>').insertAfter("#password");
                             isRightCard = true;
+                            $('#unreg').removeAttr("disabled");
                         } else {
                             //验证失败
                             isRightCard = false;
+                            $('#unreg').attr("disabled", "true");
                             $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
                         }
                     },
                     error: function(error) {
                         console.error(error);
                         isRightCard = false;
-                        // $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
-                        // alert("异常！");
+                        $('#unreg').attr("disabled", "true");
                         Lobibox.notify('error', {
                             soundPath: "/static/sounds/",
                             size: 'mini',
@@ -132,12 +140,12 @@
             console.log(!_.isEmpty(account) && !_.isEmpty(password));
             if (!_.isEmpty(account) && !_.isEmpty(password)) {
                 if (isRightCard) {
-                    // $("form").submit();
+                    $('#unreg').attr("disabled", "true");
                     $.ajax({
                         type: 'post',
                         "url": "/close/close/",
                         cache: false,
-                        contentType: "application/json; charset=utf-8",
+                        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                         data: $('form').serialize(),
                         dataType: 'json',
                         success: function(data) {
@@ -148,12 +156,13 @@
                                 title: '注销成功',
                                 msg: '注销成功，3s后返回登录页。'
                             });
-                            setTimeout(function() {
-                                window.location.href = "/index/index/";
-                            }, 3000);
+                            // setTimeout(function() {
+                            //     window.location.href = "/index/index/";
+                            // }, 3000);
                         },
                         error: function(error) {
                             console.error(JSON.stringify(error));
+                            $('#unreg').removeAttr("disabled");
                             Lobibox.notify('error', {
                                 soundPath: "/static/sounds/",
                                 size: 'mini',
@@ -163,6 +172,7 @@
                         }
                     });
                 } else {
+                    $('#unreg').removeAttr("disabled");
                     Lobibox.notify('error', {
                         soundPath: "/static/sounds/",
                         size: 'mini',

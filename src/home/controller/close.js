@@ -26,21 +26,22 @@ export default class extends Base {
         try {
             let status = await instance.unregister(post.account);
             if (status.result == "success") {
-                return this.redirect('/index');
-            } else {
-                this.assign({
-                    "closeError": status.info,
-                    "title": "注册账户"
+                return this.json({
+                    status: status.result,
+                    info: status.info
                 });
-                return this.display('close/index');
+            } else {
+                return this.fail({
+                    status: status.result,
+                    info: status.info
+                });
             }
         } catch (e) {
             logger.error(e);
-            this.assign({
-                "closeError": e.info,
-                "title": "注册账户"
+            return this.fail({
+                status: e.result,
+                info: e.info
             });
-            return this.display('close/index');
         }
     }
 }

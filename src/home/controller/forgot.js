@@ -25,21 +25,22 @@ export default class extends Base {
         try {
             let status = await instance.modifypassword(post.account, post.newpassword);
             if (status.result == "success") {
-                return this.redirect('/index');
-            } else {
-                this.assign({
-                    "forgotError": status.info,
-                    "title": "重置密码"
+                return this.json({
+                    status: status.result,
+                    info: status.info
                 });
-                return this.display('forgot/index');
+            } else {
+                return this.fail({
+                    status: status.result,
+                    info: status.info
+                });
             }
         } catch (e) {
             logger.error(e);
-            this.assign({
-                "forgotError": e.info,
-                "title": "重置密码"
+            return this.fail({
+                status: e.result,
+                info: e.info
             });
-            return this.display('forgot/index');
         }
     }
 }

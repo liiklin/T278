@@ -94,21 +94,22 @@ export default class extends Base {
         try {
             let status = await instance.register(post.account, post.phone, post.loginpwd);
             if (status.result == "success") {
-                return this.redirect('/index');
-            } else {
-                this.assign({
-                    "registerError": status,
-                    "title": "注册账户"
+                return this.json({
+                    status: status.result,
+                    info: status.info
                 });
-                return this.display('register/index');
+            } else {
+                return this.fail({
+                    status: status.result,
+                    info: status.info
+                });
             }
         } catch (e) {
             logger.error(e);
-            this.assign({
-                "registerError": e,
-                "title": "注册账户"
+            return this.fail({
+                status: e.result,
+                info: e.info
             });
-            return this.display('register/index');
         }
     }
 }

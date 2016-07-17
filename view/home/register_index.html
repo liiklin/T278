@@ -290,7 +290,36 @@
                 return;
             }
             if (loginpwd == comfirpwd) {
-                $("form").submit();
+                // $("form").submit();
+                $.ajax({
+                    type: 'post',
+                    "url": "/register/register/",
+                    cache: false,
+                    contentType: "application/json; charset=utf-8",
+                    data: $('form').serialize(),
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(JSON.stringify(data));
+                        Lobibox.notify('success', {
+                            soundPath: "/static/sounds/",
+                            size: 'mini',
+                            title: '注册成功',
+                            msg: '注册成功，3s后返回登录页。'
+                        });
+                        setTimeout(function() {
+                            window.location.href = "/index/index/";
+                        }, 3000);
+                    },
+                    error: function(error) {
+                        console.error(JSON.stringify(error));
+                        Lobibox.notify('error', {
+                            soundPath: "/static/sounds/",
+                            size: 'mini',
+                            title: '注册错误',
+                            msg: error.info
+                        });
+                    }
+                });
             } else {
                 Lobibox.notify('error', {
                     soundPath: "/static/sounds/",

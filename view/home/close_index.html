@@ -1,18 +1,18 @@
 {% extends "./base.html" %} {% block css %}
 <style type="text/css">
-.mui-input-group label {
-    width: 35%;
-    padding: 10px 5px;
-    text-align: -webkit-center;
-    text-align: center;
-}
+    .mui-input-group label {
+        width: 35%;
+        padding: 10px 5px;
+        text-align: -webkit-center;
+        text-align: center;
+    }
 
-.mui-input-row label~input,
-.mui-input-row label~select,
-.mui-input-row label~textarea {
-    width: 55%;
-    float: none;
-}
+    .mui-input-row label~input,
+    .mui-input-row label~select,
+    .mui-input-row label~textarea {
+        width: 55%;
+        float: none;
+    }
 </style>
 {% endblock %} {% block content %}
 <header class="mui-bar mui-bar-nav">
@@ -43,122 +43,152 @@
 </div>
 {% endblock %} {% block script %}
 <script type="text/javascript">
-$().ready(function() {
-    //校验一卡通是否正确
-    $("#account").on("change", function() {
-        var password = $("#password").val();
-        var account = $(this).val();
-        if (!_.isEmpty(password) && !_.isEmpty(account)) {
-            var data = {
-                account: account,
-                password: password
-            };
-            $.ajax({
-                type: 'post',
-                "url": "/register/idchecker/",
-                cache: false,
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(data),
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    if (data.status == 'success') {
-                        //验证成功
-                        $('<span class="mui-icon mui-icon-checkmarkempty"></span>').insertAfter("#password");
-                        isRightCard = true;
-                    } else {
-                        //验证失败
+    var isRightCard = false;
+    $().ready(function() {
+        //校验一卡通是否正确
+        $("#account").on("change", function() {
+            var password = $("#password").val();
+            var account = $(this).val();
+            if (!_.isEmpty(password) && !_.isEmpty(account)) {
+                var data = {
+                    account: account,
+                    password: password
+                };
+                $.ajax({
+                    type: 'post',
+                    "url": "/register/idchecker/",
+                    cache: false,
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(data),
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        if (data.status == 'success') {
+                            //验证成功
+                            $('<span class="mui-icon mui-icon-checkmarkempty"></span>').insertAfter("#password");
+                            isRightCard = true;
+                        } else {
+                            //验证失败
+                            isRightCard = false;
+                            $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
+                        }
+                    },
+                    error: function(error) {
+                        console.error(error);
                         isRightCard = false;
-                        $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
+                        // $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
+                        alert("异常！");
                     }
-                },
-                error: function(error) {
-                    console.error(error);
-                    isRightCard = false;
-                    // $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
-                    alert("异常！");
-                }
-            });
-        }
-    });
-    $("#password").on("change", function() {
-        var password = $(this).val();
-        var account = $("#account").val();
-        if (!_.isEmpty(password) && !_.isEmpty(account)) {
-            var data = {
-                account: account,
-                password: password
-            };
-            $.ajax({
-                type: 'post',
-                "url": "/register/idchecker/",
-                cache: false,
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(data),
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    if (data.status == 'success') {
-                        //验证成功
-                        $('<span class="mui-icon mui-icon-checkmarkempty"></span>').insertAfter("#password");
-                        isRightCard = true;
-                    } else {
-                        //验证失败
+                });
+            }
+        });
+        $("#password").on("change", function() {
+            var password = $(this).val();
+            var account = $("#account").val();
+            if (!_.isEmpty(password) && !_.isEmpty(account)) {
+                var data = {
+                    account: account,
+                    password: password
+                };
+                $.ajax({
+                    type: 'post',
+                    "url": "/register/idchecker/",
+                    cache: false,
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(data),
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        if (data.status == 'success') {
+                            //验证成功
+                            $('<span class="mui-icon mui-icon-checkmarkempty"></span>').insertAfter("#password");
+                            isRightCard = true;
+                        } else {
+                            //验证失败
+                            isRightCard = false;
+                            $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
+                        }
+                    },
+                    error: function(error) {
+                        console.error(error);
                         isRightCard = false;
-                        $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
+                        // $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
+                        // alert("异常！");
+                        Lobibox.notify('error', {
+                            soundPath: "/static/sounds/",
+                            size: 'mini',
+                            title: '异常！',
+                            msg: error.responseText
+                        });
                     }
-                },
-                error: function(error) {
-                    console.error(error);
-                    isRightCard = false;
-                    // $('<span class="mui-icon mui-icon-closeempty"></span>').insertAfter("#password");
-                    // alert("异常！");
+                });
+            }
+        });
+        //注销
+        var unreg = new Hammer(document.getElementById("unreg"));
+        unreg.on('tap', function(event) {
+            var account = $("#account").val();
+            var password = $("#password").val();
+            console.log(!_.isEmpty(account) && !_.isEmpty(password));
+            if (!_.isEmpty(account) && !_.isEmpty(password)) {
+                if (isRightCard) {
+                    // $("form").submit();
+                    $.ajax({
+                        type: 'post',
+                        "url": "/close/close/",
+                        cache: false,
+                        contentType: "application/json; charset=utf-8",
+                        data: $('form').serialize(),
+                        dataType: 'json',
+                        success: function(data) {
+                            console.log(JSON.stringify(data));
+                            Lobibox.notify('success', {
+                                soundPath: "/static/sounds/",
+                                size: 'mini',
+                                title: '注销成功',
+                                msg: '注销成功，3s后返回登录页。'
+                            });
+                            setTimeout(function() {
+                                window.location.href = "/index/index/";
+                            }, 3000);
+                        },
+                        error: function(error) {
+                            console.error(JSON.stringify(error));
+                            Lobibox.notify('error', {
+                                soundPath: "/static/sounds/",
+                                size: 'mini',
+                                title: '注销错误',
+                                msg: error.info
+                            });
+                        }
+                    });
+                } else {
                     Lobibox.notify('error', {
                         soundPath: "/static/sounds/",
                         size: 'mini',
-                        title: '异常！',
-                        msg: error.responseText
+                        title: '错误',
+                        msg: "请输入正确的卡号和密码！"
                     });
                 }
-            });
-        }
-    });
-    //注销
-    var unreg = new Hammer(document.getElementById("unreg"));
-    unreg.on('tap', function(event) {
-        var account = $("#account").val();
-        var password = $("#password").val();
-        console.log(!_.isEmpty(account) && !_.isEmpty(password));
-        if (!_.isEmpty(account) && !_.isEmpty(password)) {
-            if (isRightCard) {
-                $("form").submit();
             } else {
                 Lobibox.notify('error', {
                     soundPath: "/static/sounds/",
                     size: 'mini',
                     title: '错误',
-                    msg: "请输入正确的卡号和密码！"
+                    msg: "请输入完整的信息！"
                 });
             }
-        } else {
+        }, false);
+
+        //注销错误
+        if ("{{closeError}}" !== "") {
             Lobibox.notify('error', {
                 soundPath: "/static/sounds/",
                 size: 'mini',
-                title: '错误',
-                msg: "请输入完整的信息！"
+                title: '注销错误',
+                msg: '{{closeError}}'
             });
         }
-    }, false);
-
-    //注销错误
-    if ("{{closeError}}" !== "") {
-        Lobibox.notify('error', {
-            soundPath: "/static/sounds/",
-            size: 'mini',
-            title: '注销错误',
-            msg: '{{closeError}}'
-        });
-    }
-});
+    });
 </script>
 {% endblock %}

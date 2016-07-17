@@ -24,11 +24,11 @@ export default class extends Base {
         let instance = new service();
         try {
             let status = await instance.modifypassword(post.account, post.newpassword);
-            if (status == "success") {
-                return this.redirect('/main');
+            if (status.result == "success") {
+                return this.redirect('/index');
             } else {
                 this.assign({
-                    "forgotError": status,
+                    "forgotError": status.info,
                     "title": "重置密码"
                 });
                 return this.display('forgot/index');
@@ -36,7 +36,7 @@ export default class extends Base {
         } catch (e) {
             logger.error(e);
             this.assign({
-                "forgotError": e,
+                "forgotError": e.info,
                 "title": "重置密码"
             });
             return this.display('forgot/index');

@@ -27,7 +27,7 @@ export default class extends think.service.base {
                         throw new Error("Bad response from server");
                         return reject("Bad response from server");
                     }
-                    return response.text();
+                    return response.json();
                 })
                 .then((status) => {
                     logger.info(status);
@@ -49,7 +49,7 @@ export default class extends think.service.base {
                         throw new Error("Bad response from server");
                         return reject("Bad response from server");
                     }
-                    return response.text();
+                    return response.json();
                 })
                 .then((status) => {
                     logger.info(status);
@@ -77,7 +77,7 @@ export default class extends think.service.base {
                         throw new Error("Bad response from server");
                         return reject("Bad response from server");
                     }
-                    return response.text();
+                    return response.json();
                 })
                 .then((status) => {
                     logger.info(status);
@@ -99,7 +99,7 @@ export default class extends think.service.base {
                         throw new Error("Bad response from server");
                         return reject("Bad response from server");
                     }
-                    return response.text();
+                    return response.json();
                 })
                 .then((ip) => {
                     logger.info(ip);

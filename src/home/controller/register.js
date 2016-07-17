@@ -25,9 +25,9 @@ export default class extends Base {
         let instance = new service();
         try {
             let status = await instance.idchecker(post.account, post.password);
-            if (status == "success") {
+            if (status.result == "success") {
                 return this.json({
-                    status: status
+                    status: status.result
                 });
             } else {
                 return this.fail(status);
@@ -47,9 +47,9 @@ export default class extends Base {
         let instance = new service();
         try {
             let status = await instance.phonechecker(post.phone, post.code);
-            if (status == "success") {
+            if (status.result == "success") {
                 return this.json({
-                    status: status
+                    status: status.result
                 });
             } else {
                 return this.fail(status);
@@ -70,9 +70,9 @@ export default class extends Base {
         let instance = new service();
         try {
             let status = await instance.sendverifycode(post.phone);
-            if (status == "success") {
+            if (status.result == "success") {
                 return this.json({
-                    status: status
+                    status: status.result
                 });
             } else {
                 return this.fail(status);
@@ -93,7 +93,7 @@ export default class extends Base {
         let instance = new service();
         try {
             let status = await instance.register(post.account, post.phone, post.loginpwd);
-            if (status == "success") {
+            if (status.result == "success") {
                 return this.redirect('/index');
             } else {
                 this.assign({

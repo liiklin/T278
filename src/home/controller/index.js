@@ -32,11 +32,11 @@ export default class extends Base {
         let instance = new service();
         try {
             let status = await instance.auth(post.account, post.password, ip);
-            if (status == "success") {
+            if (status.result == "success") {
                 return this.redirect('/main');
             } else {
                 this.assign({
-                    "loginError": status,
+                    "loginError": status.info,
                     "title": "登录"
                 });
                 return this.display('index/index');
@@ -44,7 +44,7 @@ export default class extends Base {
         } catch (e) {
             logger.error(e);
             this.assign({
-                "loginError": e,
+                "loginError": e.info,
                 "title": "登录"
             });
             return this.display('index/index');

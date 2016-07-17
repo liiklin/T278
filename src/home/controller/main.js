@@ -5,7 +5,7 @@ import _ from "underscore";
 var logger = require('tracer').colorConsole();
 
 export default class extends Base {
-	
+
     async __before() {
         // let service = this.service("home/auth"),
         //     instance = new service(),
@@ -33,11 +33,15 @@ export default class extends Base {
             instance = new service();
         try {
             let status = await instance.logout(ip);
-            if (!status == "success") {
+            if (!status.result == "success") {
+                this.assign({
+                    "logoutError": status.info,
+                    "title": "登录成功"
+                });
                 this.redirect('/');
             } else {
                 this.assign({
-                    "logoutError": status,
+                    "logoutError": status.info,
                     "title": "登录成功"
                 });
                 this.display('main/index');
@@ -45,7 +49,7 @@ export default class extends Base {
         } catch (e) {
             logger.error(e);
             this.assign({
-                "logoutError": e,
+                "logoutError": e.info,
                 "title": "登录成功"
             });
             this.display('main/index');

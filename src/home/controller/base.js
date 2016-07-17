@@ -8,6 +8,6 @@ export default class extends think.controller.base {
 	}
 
 	__before() {
-		console.log("__before");
+		console.log("__before base");
 	}
 }

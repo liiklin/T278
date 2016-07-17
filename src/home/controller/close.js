@@ -25,11 +25,11 @@ export default class extends Base {
         let instance = new service();
         try {
             let status = await instance.unregister(post.account);
-            if (status == "success") {
+            if (status.result == "success") {
                 return this.redirect('/index');
             } else {
                 this.assign({
-                    "closeError": status,
+                    "closeError": status.info,
                     "title": "注册账户"
                 });
                 return this.display('close/index');
@@ -37,7 +37,7 @@ export default class extends Base {
         } catch (e) {
             logger.error(e);
             this.assign({
-                "closeError": e,
+                "closeError": e.info,
                 "title": "注册账户"
             });
             return this.display('close/index');
